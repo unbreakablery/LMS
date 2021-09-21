@@ -29,7 +29,7 @@ $(document).ready(function () {
       return false;
     }
 
-    window.location.href = "/category/delete/" + catId;
+    window.location.href = host + "/category/delete/" + catId;
   });
 });
 /******/ })()

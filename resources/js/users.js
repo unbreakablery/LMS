@@ -16,7 +16,7 @@ $(document).ready(function() {
         loader('show');
 
         $.ajax({
-            url: "/users/active",
+            url: host + "/users/active",
             type: "put",
             dataType: "json",
             data: {
@@ -55,7 +55,7 @@ $(document).ready(function() {
         loader('show');
 
         $.ajax({
-            url: "/users/active",
+            url: host + "/users/active",
             type: "put",
             dataType: "json",
             data: {
@@ -107,7 +107,7 @@ $(document).ready(function() {
         loader('show');
 
         $.ajax({
-            url: "/users/remove",
+            url: host + "/users/remove",
             type: "put",
             dataType: "json",
             data: {
@@ -197,7 +197,7 @@ $(document).ready(function() {
         loader('show');
 
         $.ajax({
-            url: "/users/update",
+            url: host + "/users/update",
             type: "put",
             dataType: "json",
             data: {

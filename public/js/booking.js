@@ -48,7 +48,7 @@ $(document).ready(function () {
 
     loader('show');
     $.ajax({
-      url: "/equipment/get",
+      url: host + "/equipment/get",
       dataType: "json",
       type: "post",
       data: {
@@ -67,7 +67,7 @@ $(document).ready(function () {
             $('#view-equipment-modal #equ_image').addClass('d-none');
           } else {
             $('#view-equipment-modal #equ_image').removeClass('d-none');
-            $('#view-equipment-modal #equ_image').attr('src', '/images/equipments/' + data.equipment.equ_image);
+            $('#view-equipment-modal #equ_image').attr('src', host + '/images/equipments/' + data.equipment.equ_image);
           }
 
           $('#view-equipment-modal #equ_status').val(data.equipment.status_name);
@@ -102,7 +102,7 @@ $(document).ready(function () {
 
     loader('show');
     $.ajax({
-      url: "/booking/manage/remove",
+      url: host + "/booking/manage/remove",
       dataType: "json",
       type: "delete",
       data: {
@@ -114,7 +114,7 @@ $(document).ready(function () {
 
         if (data.success == true) {
           $('#delete-booking-modal').modal('hide');
-          window.location.href = "/booking/manage/list";
+          window.location.href = host + "/booking/manage/list";
         } else {
           showMessage('danger', data.message);
         }
@@ -146,7 +146,7 @@ $(document).ready(function () {
 
     loader('show');
     $.ajax({
-      url: "/booking/get",
+      url: host + "/booking/get",
       dataType: "json",
       type: "post",
       data: {
@@ -184,7 +184,7 @@ $(document).ready(function () {
 
     loader('show');
     $.ajax({
-      url: "/booking/manage/update-status",
+      url: host + "/booking/manage/update-status",
       dataType: "json",
       type: "post",
       data: {
@@ -254,7 +254,7 @@ $(document).ready(function () {
 
     loader('show');
     $.ajax({
-      url: "/booking/cancel",
+      url: host + "/booking/cancel",
       dataType: "json",
       type: "post",
       data: {
@@ -266,7 +266,7 @@ $(document).ready(function () {
 
         if (data.success == true) {
           $('#cancel-booking-modal').modal('hide');
-          window.location.href = "/booking";
+          window.location.href = host + "/booking";
         } else {
           showMessage('danger', data.message);
         }
@@ -293,7 +293,7 @@ $(document).ready(function () {
 
     loader('show');
     $.ajax({
-      url: "/booking/return",
+      url: host + "/booking/return",
       dataType: "json",
       type: "post",
       data: {
@@ -305,7 +305,7 @@ $(document).ready(function () {
 
         if (data.success == true) {
           $('#return-equipment-modal').modal('hide');
-          window.location.href = "/booking";
+          window.location.href = host + "/booking";
         } else {
           showMessage('danger', data.message);
         }
@@ -325,7 +325,7 @@ $(document).ready(function () {
 
     loader('show');
     $.ajax({
-      url: "/booking/get",
+      url: host + "/booking/get",
       dataType: "json",
       type: "post",
       data: {
@@ -382,7 +382,7 @@ $(document).ready(function () {
 
     loader('show');
     $.ajax({
-      url: "/booking/update-period",
+      url: host + "/booking/update-period",
       dataType: "json",
       type: "post",
       data: {
@@ -395,7 +395,7 @@ $(document).ready(function () {
         loader('hide');
 
         if (data.success == true) {
-          window.location.href = "/booking";
+          window.location.href = host + "/booking";
         } else {
           showMessage('danger', data.message);
         }

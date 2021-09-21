@@ -6,7 +6,7 @@
         <div class="d-flex justify-content-center flex-column col-md-5 login-form">
             <div class="card bg-transparent">
                 <div class="card-header d-flex">
-                    <img src="images/logo.png" alt="" class="img-fluid login-logo ">
+                    <img src="{{ asset('images/logo.png') }}" alt="" class="img-fluid login-logo ">
                     <h3 class="d-flex align-items-center mb-0 ml-4">Lab Management System</h3>
                 </div>
 

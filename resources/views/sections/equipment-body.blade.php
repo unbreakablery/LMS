@@ -35,7 +35,7 @@
                         <td class="text-white pl-2 pr-2">{{ $equipment->equ_name }}</td>
                         <td class="text-center text-white pl-2 pr-2">
                             @if (!empty($equipment->equ_image))
-                            <img src="{{asset('/images/equipments/' . $equipment->equ_image)}}"
+                            <img src="{{ asset('/images/equipments/' . $equipment->equ_image) }}"
                                 width="100"
                                 alt="Equipment Image" />
                             @endif

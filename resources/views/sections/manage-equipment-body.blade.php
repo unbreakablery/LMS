@@ -40,7 +40,7 @@
                         <td class="text-white pl-2 pr-2">{{ $equipment->equ_name }}</td>
                         <td class="text-center text-white pl-2 pr-2">
                             @if (!empty($equipment->equ_image))
-                            <img src="{{asset('/images/equipments/' . $equipment->equ_image)}}"
+                            <img src="{{ asset('/images/equipments/' . $equipment->equ_image) }}"
                                 width="100"
                                 alt="Equipment Image" />
                             @endif
@@ -258,7 +258,7 @@
                                     </div>
                                 </div>
                                 <div class="col-lg-12 col-md-12 col-sm-12 p-0 text-center">
-                                    <img src="/images/equipments/empty-image.png" id="preview" class="img-thumbnail">
+                                    <img src="{{ asset('/images/equipments/empty-image.png') }}" id="preview" class="img-thumbnail">
                                 </div>
                             </div>
                         </div>
@@ -337,7 +337,7 @@
                                     </div>
                                 </div>
                                 <div class="col-lg-12 col-md-12 col-sm-12 p-0 text-center">
-                                    <img src="/images/equipments/empty-image.png" id="edit_equ_image_preview" class="img-thumbnail">
+                                    <img src="{{ asset('/images/equipments/empty-image.png') }}" id="edit_equ_image_preview" class="img-thumbnail">
                                 </div>
                             </div>
                         </div>

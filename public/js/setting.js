@@ -10,7 +10,7 @@ $(document).ready(function () {
     });
   });
   $('button#btn-delete-account').click(function () {
-    window.location.href = '/settings/remove/current-user';
+    window.location.href = host + '/settings/remove/current-user';
   });
   $('button#btn-change-password').click(function () {
     $('input#new_password').val('');
@@ -47,7 +47,7 @@ $(document).ready(function () {
 
     loader('show');
     $.ajax({
-      url: "/settings/store/password",
+      url: host + "/settings/store/password",
       type: "put",
       dataType: "json",
       data: {

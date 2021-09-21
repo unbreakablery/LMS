@@ -74,7 +74,7 @@ $(document).ready(function () {
     $('#new-equipment-modal #equ_desc').val('');
     $('#new-equipment-modal #equ_image').val('');
     $('#new-equipment-modal #file').val('');
-    $('#new-equipment-modal #preview').attr('src', '/images/equipments/empty-image.png');
+    $('#new-equipment-modal #preview').attr('src', host + '/images/equipments/empty-image.png');
     $('#new-equipment-modal #cat_id').html('');
   }
 
@@ -82,7 +82,7 @@ $(document).ready(function () {
     clearNewEquipmentModal();
     loader('show');
     $.ajax({
-      url: "/category/list",
+      url: host + "/category/list",
       dataType: "json",
       type: "post",
       data: {
@@ -119,7 +119,7 @@ $(document).ready(function () {
     formData.append('_token', $('meta[name="csrf-token"]').attr('content'));
     loader('show');
     $.ajax({
-      url: "/equipment/manage/store",
+      url: host + "/equipment/manage/store",
       type: "post",
       data: formData,
       contentType: false,
@@ -131,7 +131,7 @@ $(document).ready(function () {
 
         if (data.success == true) {
           $('#new-equipment-modal').modal('hide');
-          window.location.href = "/equipment/manage/list";
+          window.location.href = host + "/equipment/manage/list";
         } else {
           showMessage('danger', data.message);
         }
@@ -149,7 +149,7 @@ $(document).ready(function () {
 
     loader('show');
     $.ajax({
-      url: "/equipment/get",
+      url: host + "/equipment/get",
       dataType: "json",
       type: "post",
       data: {
@@ -168,7 +168,7 @@ $(document).ready(function () {
             $('#view-equipment-modal #equ_image').addClass('d-none');
           } else {
             $('#view-equipment-modal #equ_image').removeClass('d-none');
-            $('#view-equipment-modal #equ_image').attr('src', '/images/equipments/' + data.equipment.equ_image);
+            $('#view-equipment-modal #equ_image').attr('src', host + '/images/equipments/' + data.equipment.equ_image);
           }
 
           $('#view-equipment-modal #equ_status').val(data.equipment.status_name);
@@ -205,7 +205,7 @@ $(document).ready(function () {
 
     loader('show');
     $.ajax({
-      url: "/equipment/manage/remove",
+      url: host + "/equipment/manage/remove",
       dataType: "json",
       type: "delete",
       data: {
@@ -217,7 +217,7 @@ $(document).ready(function () {
 
         if (data.success == true) {
           $('#delete-equipment-modal').modal('hide');
-          window.location.href = "/equipment/manage/list";
+          window.location.href = host + "/equipment/manage/list";
         } else {
           showMessage('danger', data.message);
         }
@@ -231,7 +231,7 @@ $(document).ready(function () {
     $('#edit-equipment-modal #equ_desc').val('');
     $('#edit-equipment-modal #equ_image').val('');
     $('#edit-equipment-modal #edit_equ_image_file').val('');
-    $('#edit-equipment-modal #edit_equ_image_preview').attr('src', '/images/equipments/empty-image.png');
+    $('#edit-equipment-modal #edit_equ_image_preview').attr('src', host + '/images/equipments/empty-image.png');
     $('#edit-equipment-modal #equ_status').val('');
     $('#edit-equipment-modal #cat_id').html('');
   }
@@ -247,7 +247,7 @@ $(document).ready(function () {
 
     loader('show');
     $.ajax({
-      url: "/equipment/get",
+      url: host + "/equipment/get",
       dataType: "json",
       type: "post",
       data: {
@@ -266,14 +266,14 @@ $(document).ready(function () {
 
           if (!empty(data.equipment.equ_image)) {
             $('#edit-equipment-modal #edit_equ_image_file').val(data.equipment.equ_image);
-            $('#edit-equipment-modal #edit_equ_image_preview').attr('src', '/images/equipments/' + data.equipment.equ_image);
+            $('#edit-equipment-modal #edit_equ_image_preview').attr('src', host + '/images/equipments/' + data.equipment.equ_image);
           }
 
           $('#edit-equipment-modal #equ_status').val(data.equipment.status_name); // $('#edit-equipment-modal #cat_name').val(data.equipment.category.cat_name);
 
           var cat_id = data.equipment.cat_id;
           $.ajax({
-            url: "/category/list",
+            url: host + "/category/list",
             dataType: "json",
             type: "post",
             data: {
@@ -314,7 +314,7 @@ $(document).ready(function () {
     formData.append('_token', $('meta[name="csrf-token"]').attr('content'));
     loader('show');
     $.ajax({
-      url: "/equipment/manage/update",
+      url: host + "/equipment/manage/update",
       type: "post",
       data: formData,
       contentType: false,
@@ -326,7 +326,7 @@ $(document).ready(function () {
 
         if (data.success == true) {
           $('#edit-equipment-modal').modal('hide');
-          window.location.href = "/equipment/manage/list";
+          window.location.href = host + "/equipment/manage/list";
         } else {
           showMessage('danger', data.message);
         }
@@ -351,7 +351,7 @@ $(document).ready(function () {
     var bookingEnd = $('#request-booking-modal #booking_end').val();
     loader('show');
     $.ajax({
-      url: "/booking/request",
+      url: host + "/booking/request",
       dataType: "json",
       type: "post",
       data: {

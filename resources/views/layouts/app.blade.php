@@ -8,8 +8,8 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <title>Lab Management System</title>
-    <link rel="shortcut icon" type="image/png/ico" href="/favicon.ico">
-    <link rel="apple-touch-icon" sizes="192x192" href="/favicon192.ico" />
+    <link rel="shortcut icon" type="image/png/ico" href="{{ asset('/favicon.ico') }}">
+    <link rel="apple-touch-icon" sizes="192x192" href="{{ asset('/favicon192.ico') }}" />
     <!-- Fonts -->
     <!-- <link rel="dns-prefetch" href="//fonts.gstatic.com">
     <link href='https://fonts.googleapis.com/css?family=Titillium Web' rel='stylesheet'> -->
@@ -144,6 +144,7 @@
     <!-- <script src="{{ asset('js/bootstrap-select.min.js') }}"></script> -->
 
     <script>
+        var host = "http://local.lab-management.com/lab-management/public";
         function loader($mode) {
             var $lpageLoader = $('#page-loader');
             var $lBody = $('body');
