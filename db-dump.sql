@@ -21,10 +21,11 @@ CREATE TABLE `bookings` (
   `equ_id` int(11) NOT NULL COMMENT 'equipment id',
   `booking_user` int(11) NOT NULL COMMENT 'user id in booking',
   `booking_date` date NOT NULL COMMENT 'booking date',
-  `status` enum('0','1','2','3') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '0' COMMENT '0: booking, 1: booked/approved, 2: rejected, 3: cancelled',
+  `status` enum('0','1','2','3','4') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '0' COMMENT '0: booking, 1: booked/approved, 2: rejected, 3: cancelled, 4: returned',
+  `booking_qnt` int(10) unsigned NOT NULL DEFAULT 1 COMMENT 'equipment booking quantity',
   `booking_start` date NOT NULL COMMENT 'booking period start date',
   `booking_end` date NOT NULL COMMENT 'booking period end date',
-  `staff` int(11) NOT NULL COMMENT 'user id dealing with booking',
+  `staff` int(11) DEFAULT NULL COMMENT 'user id dealing with booking',
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`)
@@ -47,24 +48,29 @@ CREATE TABLE `categories` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 /*Data for the table `categories` */
 
 LOCK TABLES `categories` WRITE;
 
 insert  into `categories`(`id`,`cat_name`,`p_cat`,`created_at`,`updated_at`) values 
-(1,'All',0,'2021-09-09 22:05:30',NULL),
-(2,'Electronics',1,'2021-09-09 22:08:40',NULL),
-(3,'Computer',1,'2021-09-09 22:09:29',NULL),
-(4,'Desktop',3,'2021-09-09 22:09:50','2021-09-12 01:31:27'),
-(5,'Laptop',3,'2021-09-09 22:10:06','2021-09-12 01:31:33'),
-(6,'Oscilloscope',2,'2021-09-09 22:11:18',NULL),
-(8,'HP',5,'2021-09-12 06:49:42',NULL),
-(12,'Dell',4,'2021-09-12 01:59:30','2021-09-12 01:59:30'),
-(14,'Sony',5,'2021-09-13 08:37:37','2021-09-13 08:37:37'),
-(15,'IBM',5,'2021-09-13 08:37:48','2021-09-13 08:37:48'),
-(16,'Chemistry',1,'2021-09-13 13:13:53','2021-09-13 13:13:53');
+(1,'All',0,'2021-09-20 08:11:27','2021-09-20 08:11:27'),
+(2,'Computer',1,'2021-09-20 08:14:59','2021-09-20 08:14:59'),
+(3,'Desktop',2,'2021-09-20 08:15:13','2021-09-20 08:15:13'),
+(4,'Laptop',2,'2021-09-20 08:15:20','2021-09-20 08:15:20'),
+(5,'Dell',3,'2021-09-20 08:15:35','2021-09-20 08:15:35'),
+(6,'HP',4,'2021-09-20 08:15:42','2021-09-20 08:15:42'),
+(7,'Eelectronics',1,'2021-09-20 08:15:54','2021-09-20 08:15:54'),
+(8,'Oscilloscope',7,'2021-09-20 08:18:55','2021-09-20 08:18:55'),
+(9,'Chemistry',1,'2021-09-20 09:32:27','2021-09-20 09:32:27'),
+(10,'Beakers',9,'2021-09-20 09:34:30','2021-09-20 09:34:30'),
+(11,'Flasks',9,'2021-09-20 09:35:49','2021-09-20 09:35:49'),
+(12,'Tubes',9,'2021-09-20 09:36:43','2021-09-20 09:36:43'),
+(13,'Watch Glasses',9,'2021-09-20 09:37:14','2021-09-20 09:37:14'),
+(14,'Crucibles',9,'2021-09-20 09:38:11','2021-09-20 09:38:11'),
+(15,'Funnels',9,'2021-09-20 09:39:15','2021-09-20 09:39:15'),
+(17,'Geographics',1,'2021-09-21 17:58:42','2021-09-21 17:58:42');
 
 UNLOCK TABLES;
 
@@ -78,22 +84,34 @@ CREATE TABLE `equipment` (
   `equ_name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'equipment name',
   `equ_desc` text COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'equipment description/spec',
   `equ_image` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'equipment image',
-  `equ_status` enum('0','1','2') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '0' COMMENT '0: available, 1: booking, 2:pickup(booked)',
+  `equ_total_qnt` int(10) unsigned NOT NULL DEFAULT 100 COMMENT 'equipment total quantity',
+  `equ_current_qnt` int(10) unsigned NOT NULL DEFAULT 100 COMMENT 'equipment current quantity',
+  `equ_status` enum('0','1') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '0' COMMENT '0: unbookable, 1: bookable',
   `cat_id` int(11) DEFAULT NULL COMMENT 'category id',
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `equipment_equ_code_unique` (`equ_code`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 /*Data for the table `equipment` */
 
 LOCK TABLES `equipment` WRITE;
 
-insert  into `equipment`(`id`,`equ_code`,`equ_name`,`equ_desc`,`equ_image`,`equ_status`,`cat_id`,`created_at`,`updated_at`) values 
-(1,'EQ0001','DELL 1019','CORE i-7 6400\r\nDDR3 16GB\r\nHDD 2TB','EQ0001.png','1',12,'2021-09-14 13:38:01','2021-09-14 13:38:01'),
-(3,'EQ0015','WOW','EPROM\r\nTEST','EQ0015.png','2',14,'2021-09-14 13:42:40','2021-09-14 13:42:40'),
-(5,'EQ0009','IBM RT-02','REPLAY',NULL,'1',5,'2021-09-14 22:48:29','2021-09-14 22:48:32');
+insert  into `equipment`(`id`,`equ_code`,`equ_name`,`equ_desc`,`equ_image`,`equ_total_qnt`,`equ_current_qnt`,`equ_status`,`cat_id`,`created_at`,`updated_at`) values 
+(1,'EQ0021','HP 20200','Core i-7 7543\r\nDDR3 16GB\r\nHDD 2TB',NULL,100,100,'1',6,'2021-09-20 08:17:30','2021-09-20 09:47:57'),
+(2,'EQ0022','HP 6400','Core i-6 6400\r\nDDR3 16GB\r\nHDD 2TB',NULL,100,100,'1',6,'2021-09-20 08:18:30','2021-09-20 09:48:05'),
+(3,'EQ0023','NOVA 483-929','Screen size\r\nOscilloscope display screens have improved immeasurably over the last few years. Screen sizes have increased significantly and the definition is very much better.\r\n\r\nUsing modern screens it is possible to see a lot of definition in the waveform, and this could reveal issues that may not have been visible on older scopes.',NULL,100,100,'1',8,'2021-09-20 08:21:53','2021-09-20 09:50:26'),
+(4,'EQ0010','Siglent SDS1104X-E 100Mhz digital oscilloscope 4 channels standard decoder','Brand Name	Siglent\r\nColor	Grey\r\nDisplay Type	TFT -LCD\r\nEan	0764560085678 , 8011529266756\r\nGlobal Trade Identification Number	00764560085678\r\nHeight	42.0 centimeters\r\nIncluded Components	SDS1104X-E, Quick Start, Calibration Certificate, 4 passive probes, USB cable','EQ0010.jpg',100,100,'1',8,'2021-09-20 08:26:01','2021-09-21 18:35:04'),
+(5,'EQ0024','Rigol DS1054Z Digital Oscilloscopes - Bandwidth: 50 MHz, Channels: 4 Serial Decode Included','Body Style	Benchtop\r\nBrand Name	Rigol\r\nColor	Grey\r\nEan	0190203037252 , 4631123823632 , 0789164314795 , 0190073585655\r\nItem Weight	6.60 pounds\r\nMaterial	Plastic\r\nModel Number	DS1054Z\r\nNumber of Items	1\r\nPart Number	DS1054Z\r\nPower Source Type	corded-electric\r\nUNSPSC Code	41110000\r\nUPC	190073585655 , 190203037252 , 789164314795','EQ0024.jpg',100,100,'1',8,'2021-09-20 08:27:15','2021-09-24 11:30:14'),
+(6,'EQ0005','Beaker 20-80','Dia 20-80mm','EQ0005.webp',100,100,'1',10,'2021-09-20 09:40:29','2021-10-04 20:14:04'),
+(7,'EQ0004','Flask 30-100','Top DIa. 30mm\r\nBottom Dia. 100mm','EQ0004.webp',100,100,'1',11,'2021-09-20 09:41:49','2021-09-24 11:29:27'),
+(8,'EQ0006','Crucible 50','Dia. 50mm','EQ0006.webp',100,100,'1',14,'2021-09-20 09:43:01','2021-09-24 08:56:40'),
+(9,'EQ0007','Watch Glasses','R - 50mm\r\nH - 20mm','EQ0007.webp',100,100,'1',13,'2021-09-20 09:45:16','2021-09-20 09:45:16'),
+(10,'EQ0008','Tube 33993','Dia. 10mm','EQ0008.webp',100,100,'1',12,'2021-09-20 09:46:12','2021-09-21 18:35:08'),
+(11,'EQ0009','Funnel 100-5','WR-100mm\r\nTR-5mm','EQ0009.webp',100,100,'1',15,'2021-09-20 09:47:35','2021-09-20 09:47:35'),
+(13,'EQ0002','Graduated cylinders','This is a primary measuring tool for the volume of a liquid. There are several markings up and down the length of the container with specific increments. Graduated cylinders come in many sizes. The smaller they are in diameter, the more specific the volume measurements will be.\r\n\r\nWhen reading the volume from a graduated cylinder, you will notice that the liquid seems to have an indentation. The liquid around the edges will be higher than the liquid in the center, sloping down like the sides of a trampoline when someone is standing in the middle. This is called the meniscus. Line the lowest point of the meniscus up with the nearest marking, keeping the cylinder level to properly read the volume.','EQ0002.webp',100,100,'1',1,'2021-10-04 06:37:59','2021-10-05 04:45:52'),
+(14,'EQ0003','Pipettes','There are a large variety of pipettes designed to accomplish specific goals. However, they are all for measuring an exact volume of liquid and placing it into another container.','EQ0003.webp',100,100,'1',1,'2021-10-04 15:45:42','2021-10-05 05:24:49');
 
 UNLOCK TABLES;
 
@@ -126,7 +144,7 @@ CREATE TABLE `migrations` (
   `migration` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `batch` int(11) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 /*Data for the table `migrations` */
 
@@ -140,7 +158,10 @@ insert  into `migrations`(`id`,`migration`,`batch`) values
 (5,'2021_09_07_043552_create_equipment_table',1),
 (6,'2021_09_07_043616_create_bookings_table',1),
 (7,'2021_09_07_043639_create_trackings_table',1),
-(8,'2021_09_07_043701_create_notifications_table',1);
+(8,'2021_09_07_043701_create_notifications_table',1),
+(13,'2021_10_04_052937_add_equ_total_qnt_to_equipment_table',2),
+(14,'2021_10_04_055648_add_equ_current_qnt_to_equipment_table',2),
+(15,'2021_10_04_194526_add_booking_qnt_to_bookings_table',3);
 
 UNLOCK TABLES;
 
@@ -192,7 +213,7 @@ CREATE TABLE `trackings` (
   `booking_id` int(11) NOT NULL COMMENT 'booking id',
   `tracking_time` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp() COMMENT 'tracking timestamp',
   `staff` int(11) NOT NULL COMMENT 'user id dealing with booking',
-  `status` enum('0','1','2','3') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '0' COMMENT '0: booking, 1: booked/approved, 2: rejected, 3: cancelled',
+  `status` enum('0','1','2','3','4','5','6') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '0' COMMENT '0: booking, 1: booked/approved, 2: rejected, 3: cancelled, 4: deleted, 5: returned, 6: changed booking info',
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`)
@@ -222,16 +243,16 @@ CREATE TABLE `users` (
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `users_email_unique` (`email`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 /*Data for the table `users` */
 
 LOCK TABLES `users` WRITE;
 
 insert  into `users`(`id`,`first_name`,`last_name`,`email`,`email_verified_at`,`password`,`role`,`active`,`remember_token`,`created_at`,`updated_at`) values 
-(1,'Anthony','Edward','labadmin2021@gmail.com',NULL,'$2y$10$08AXu2mEtmV66RfXAEKC0emJe.It3lME.0BMyTBDDe4MU/1EUOkCO','1',1,NULL,NULL,'2021-09-07 11:57:09'),
-(2,'Jessica','Gassner','aaa.bbb@gmail.com',NULL,'$2y$10$9pcUjz3xwnRpVz3ytXBKf.EV//osDbWD5vUPBCBD7hQWtukYvcmXi','3',1,NULL,'2021-09-07 07:14:02','2021-09-07 14:06:09'),
-(4,'Mike','Dole','mike.dole@gmail.com',NULL,'$2y$10$nbakgDkJqN5fFIg8mm5yFe1pYsTi8/BZIBa83Bp.x5PTpUvSFRP36','2',1,NULL,'2021-09-07 13:37:51','2021-09-07 14:06:49');
+(1,'Benaris','Hajduk','labadmin2021@gmail.com',NULL,'$2y$10$ez/i6fMqonKrIfRgTQoiBOO.WmIABA/mrNL3TCuRYd4RjaMjaogpO','1',1,NULL,'2021-09-20 08:11:27','2021-09-21 17:51:00'),
+(2,'Anthony','Edward','unbreakablery+1@gmail.com',NULL,'$2y$10$oAFaqgy5egcXf2go48PsBOiehWmoZ.LMLHBq7NFj.T8uJQkipRjdS','3',1,NULL,'2021-09-20 08:12:21','2021-09-21 17:54:28'),
+(3,'Christopher2','Horn2','unbreakablery+2@gmail.com',NULL,'$2y$10$cAI8Z1pbBTHnxRBNFMhDsOv7v6/WdfAwSpkwvDn/lzAvDBWKwjMoi','3',1,NULL,'2021-09-20 08:13:49','2021-09-21 17:54:48');
 
 UNLOCK TABLES;
 
