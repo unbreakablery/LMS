@@ -26,9 +26,9 @@ class CreateEquipmentTable extends Migration
             $table->string('equ_image')
                 ->nullable()
                 ->comment('equipment image');
-            $table->enum('equ_status', ['0', '1', '2'])
-                ->default('0')
-                ->comment('0: available, 1: booking, 2:pickup(booked)');
+            $table->enum('equ_status', ['0', '1'])
+                ->default('1')
+                ->comment('0: unbookable, 1: bookable');
             $table->integer('cat_id')
                 ->nullable()
                 ->comment('category id');
