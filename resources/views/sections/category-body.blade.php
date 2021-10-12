@@ -58,7 +58,7 @@
                         </select>
                     </div>
                     <div class="form-group">
-                        <button class="btn btn-success" id="btn-save">Save</button>
+                        <button class="btn btn-dark" id="btn-save">Save</button>
                         <button type="button" class="btn btn-primary" id="btn-new">New</button>
                         <button type="button" class="btn btn-danger" id="btn-delete">Delete</button>
                     </div>
