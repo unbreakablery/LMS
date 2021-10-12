@@ -1,4 +1,4 @@
-<nav class="main-menu">
+<nav class="main-menu bg-dropdown-menu">
     <ul class="mt-4">
         @can('manage-user')
         <li>
@@ -62,7 +62,7 @@
         @endcan
         @can('tracking')
         <li>
-            <a class="nav-link @if (isset($nl_tracking_class)) {{ $nl_tracking_class }} @endif" href="{{ '' }}">
+            <a class="nav-link @if (isset($nl_trackings_class)) {{ $nl_trackings_class }} @endif" href="{{ route('tracking.list') }}">
                 <i class="bi bi-grid-3x3-gap-fill bi-2x"></i>
                 <span class="nav-text">
                     {{ __('Tracking') }}

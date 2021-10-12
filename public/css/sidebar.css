@@ -23,7 +23,6 @@ nav.main-menu.expanded {
 }
 
 .main-menu {
-  background: #000;
   border-right: 1px solid #dee2e6;
   position: absolute;
   top: 0;
@@ -124,7 +123,7 @@ nav.main-menu li.active > a,
 .no-touch .dashboard-page nav.dashboard-menu ul li:hover a,
 .dashboard-page nav.dashboard-menu ul li.active a {
   color: #fff;
-  background-color: #b3bfc8;
+  background-color: #5ec21b;
 }
 
 .area {
