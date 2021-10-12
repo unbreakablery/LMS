@@ -50,3 +50,5 @@ Route::get('/booking', 'BookingController@index')->middleware('can:booking')->na
 Route::post('/booking/cancel', 'BookingController@cancelBooking')->middleware('can:booking')->name('booking.cancel');
 Route::post('/booking/return', 'BookingController@returnBooking')->middleware('can:booking')->name('booking.return');
 Route::post('/booking/update-period', 'BookingController@updateBookingPeriod')->middleware('can:booking')->name('booking.update_period');
+
+Route::get('/tracking/list', 'TrackingController@index')->middleware('can:tracking')->name('tracking.list');
