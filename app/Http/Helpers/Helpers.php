@@ -131,9 +131,9 @@ if (!function_exists('getUserRoleName')) {
 if (!function_exists('getUserActiveClass')) {
     function getUserActiveClass($active) {
         if ($active) {
-            return 'text-success';
+            return 'bg-primary';
         } else {
-            return 'text-danger';
+            return 'bg-danger';
         }
     }
 }
@@ -278,13 +278,10 @@ if (!function_exists('getStatusName')) {
             case 'equipment':
                 switch ($status) {
                     case '0':
-                        return 'Available';
+                        return 'Unbookable';
                         break;
                     case '1':
-                        return 'In Booking';
-                        break;
-                    case '2':
-                        return 'Booked/Pickup';
+                        return 'Bookable';
                         break;
                 }
                 return 'Unknown';
@@ -309,6 +306,32 @@ if (!function_exists('getStatusName')) {
                 }
                 return 'Unknown';
                 break;
+            case 'tracking':
+                    switch ($status) {
+                        case '0':
+                            return 'In Booking';
+                            break;
+                        case '1':
+                            return 'Booked/Approved';
+                            break;
+                        case '2':
+                            return 'Rejected';
+                            break;
+                        case '3':
+                            return 'Cancelled';
+                            break;
+                        case '4':
+                            return 'Deleted Booking';
+                            break;
+                        case '5':
+                            return 'Returned';
+                            break;
+                        case '6':
+                            return 'changed booking info';
+                            break;
+                    }
+                    return 'Unknown';
+                    break;
             case 'notification':
                 break;
         }
@@ -324,42 +347,78 @@ if (!function_exists('getStatusClassName')) {
             case 'equipment':
                 switch ($status) {
                     case '0':
-                        return 'text-success';
+                        return 'bg-danger';
                         break;
                     case '1':
-                        return 'text-danger';
-                        break;
-                    case '2':
-                        return '';
+                        return 'bg-transparent';
                         break;
                 }
-                return 'text-warning';
+                return 'bg-warning';
                 break;
             case 'booking':
                 switch ($status) {
                     case '0':
-                        return 'text-primary';
+                        return 'bg-primary';
                         break;
                     case '1':
-                        return 'text-success';
+                        return 'bg-transparent';
                         break;
                     case '2':
-                        return 'text-danger';
+                        return 'bg-danger';
                         break;
                     case '3':
-                        return 'text-secondary';
+                        return 'bg-secondary';
                         break;
                     case '4':
-                        return 'text-white';
+                        return 'bg-dark';
                         break;
                 }
-                return 'text-warning';
+                return 'bg-warning';
                 break;
+            case 'tracking':
+                    switch ($status) {
+                        case '0':
+                            return 'bg-primary';
+                            break;
+                        case '1':
+                            return 'bg-transparent';
+                            break;
+                        case '2':
+                            return 'bg-danger';
+                            break;
+                        case '3':
+                            return 'bg-secondary';
+                            break;
+                        case '4':
+                            return 'bg-warning';
+                            break;
+                        case '5':
+                            return 'bg-dark';
+                            break;
+                        case '6':
+                            return 'bg-info';
+                            break;
+                    }
+                    return 'bg-white';
+                    break;
             case 'notification':
                 break;
         }
         
         return 'Unknown';
+    }
+}
+
+if (!function_exists('getQntClassName')) {
+    function getQntClassName($qnt)
+    {
+        if ($qnt == 0) {
+            return 'bg-danger';
+        } else if ($qnt == 1) {
+            return 'bg-warning';
+        }
+
+        return 'bg-transparent';
     }
 }
 
