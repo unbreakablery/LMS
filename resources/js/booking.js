@@ -6,7 +6,7 @@ $(document).ready(function() {
         info: true,
         paging: true,
         lengthMenu: [[10, 25, 50, -1], [10, 25, 50, "All"]],
-        order: [[ 8, "desc" ]],
+        order: [[ 9, "desc" ]],
         columnDefs: [
             { orderable: false, targets: 'no-sort' },
             // {
@@ -67,6 +67,8 @@ $(document).ready(function() {
                         $('#view-equipment-modal #equ_image').attr('src', host + '/images/equipments/' + data.equipment.equ_image);
                     }
                     $('#view-equipment-modal #equ_status').val(data.equipment.status_name);
+                    $('#view-equipment-modal #equ_total_qnt').val(data.equipment.equ_total_qnt);
+                    $('#view-equipment-modal #equ_current_qnt').val(data.equipment.equ_current_qnt);
                     $('#view-equipment-modal #cat_name').val(data.equipment.category.cat_name);
                     $('#view-equipment-modal #created_at').val(data.equipment.created_at);
                     $('#view-equipment-modal #updated_at').val(data.equipment.updated_at);
@@ -131,6 +133,7 @@ $(document).ready(function() {
         $('#edit-booking-modal #equ_name').val('');
         $('#edit-booking-modal #booking_date').val('');
         $('#edit-booking-modal #user_name').val('');
+        $('#edit-booking-modal #booking_qnt').val('');
         $('#edit-booking-modal #booking_start').val('');
         $('#edit-booking-modal #booking_end').val('');
         $('#edit-booking-modal #status').val('0');
@@ -164,6 +167,7 @@ $(document).ready(function() {
                     $('#edit-booking-modal #equ_name').val(data.booking.equipment.equ_name);
                     $('#edit-booking-modal #booking_date').val(data.booking.booking_date);
                     $('#edit-booking-modal #user_name').val(data.booking.user.first_name + ' ' + data.booking.user.last_name);
+                    $('#edit-booking-modal #booking_qnt').val(data.booking.booking_qnt);
                     $('#edit-booking-modal #booking_start').val(data.booking.booking_start);
                     $('#edit-booking-modal #booking_end').val(data.booking.booking_end);
                     $('#edit-booking-modal #status').val(data.booking.status);
@@ -205,28 +209,28 @@ $(document).ready(function() {
                     var message = "Booking(ID: B-" + data.booking.id + ", Equipment: " + data.booking.equipment.equ_name;
                     message += ") was changed status - ";
                     if (data.booking.status == '0') {
-                        $(selectedBooking).find('td:nth-child(6)').removeClass('text-success');
-                        $(selectedBooking).find('td:nth-child(6)').removeClass('text-danger');
-                        $(selectedBooking).find('td:nth-child(6)').removeClass('text-secondary');
-                        $(selectedBooking).find('td:nth-child(6)').addClass('text-primary');
+                        $(selectedBooking).find('td:nth-child(6)').removeClass('bg-transparent');
+                        $(selectedBooking).find('td:nth-child(6)').removeClass('bg-danger');
+                        $(selectedBooking).find('td:nth-child(6)').removeClass('bg-secondary');
+                        $(selectedBooking).find('td:nth-child(6)').addClass('bg-primary');
                         message += "In Booking";
                     } else if (data.booking.status == '1') {
-                        $(selectedBooking).find('td:nth-child(6)').removeClass('text-primary');
-                        $(selectedBooking).find('td:nth-child(6)').removeClass('text-danger');
-                        $(selectedBooking).find('td:nth-child(6)').removeClass('text-secondary');
-                        $(selectedBooking).find('td:nth-child(6)').addClass('text-success');
+                        $(selectedBooking).find('td:nth-child(6)').removeClass('bg-primary');
+                        $(selectedBooking).find('td:nth-child(6)').removeClass('bg-danger');
+                        $(selectedBooking).find('td:nth-child(6)').removeClass('bg-secondary');
+                        $(selectedBooking).find('td:nth-child(6)').addClass('bg-transparent');
                         message += "Approved/Booked";
                     } else if (data.booking.status == '2') {
-                        $(selectedBooking).find('td:nth-child(6)').removeClass('text-primary');
-                        $(selectedBooking).find('td:nth-child(6)').removeClass('text-success');
-                        $(selectedBooking).find('td:nth-child(6)').removeClass('text-secondary');
-                        $(selectedBooking).find('td:nth-child(6)').addClass('text-danger');
+                        $(selectedBooking).find('td:nth-child(6)').removeClass('bg-primary');
+                        $(selectedBooking).find('td:nth-child(6)').removeClass('bg-transparent');
+                        $(selectedBooking).find('td:nth-child(6)').removeClass('bg-secondary');
+                        $(selectedBooking).find('td:nth-child(6)').addClass('bg-danger');
                         message += "Rejected";
                     } else {
-                        $(selectedBooking).find('td:nth-child(6)').removeClass('text-primary');
-                        $(selectedBooking).find('td:nth-child(6)').removeClass('text-success');
-                        $(selectedBooking).find('td:nth-child(6)').removeClass('text-danger');
-                        $(selectedBooking).find('td:nth-child(6)').addClass('text-secondary');
+                        $(selectedBooking).find('td:nth-child(6)').removeClass('bg-primary');
+                        $(selectedBooking).find('td:nth-child(6)').removeClass('bg-transparent');
+                        $(selectedBooking).find('td:nth-child(6)').removeClass('bg-danger');
+                        $(selectedBooking).find('td:nth-child(6)').addClass('bg-secondary');
                         message += "Cancelled";
                     }
 
@@ -355,6 +359,7 @@ $(document).ready(function() {
                     $('#edit-booking-modal #equ_name').val(data.booking.equipment.equ_name);
                     $('#edit-booking-modal #booking_date').val(data.booking.booking_date);
                     $('#edit-booking-modal #user_name').val(data.booking.user.first_name + ' ' + data.booking.user.last_name);
+                    $('#edit-booking-modal #booking_qnt').val(data.booking.booking_qnt);
                     $('#edit-booking-modal #booking_start').val(data.booking.booking_start);
                     $('#edit-booking-modal #booking_end').val(data.booking.booking_end);
                     $('#edit-booking-modal #status').val(data.booking.status_name);
@@ -371,10 +376,16 @@ $(document).ready(function() {
 
     $('button#btn-change-booking-period').click(function() {
         var bId = $('#edit-booking-modal #booking_id').val();
+        var bQuantity = $('#edit-booking-modal #booking_qnt').val();
         var bStart = $('#edit-booking-modal #booking_start').val();
         var bEnd = $('#edit-booking-modal #booking_end').val();
         if (empty(bId)) {
             showMessage('danger', 'Error: Empty Booking ID.');
+            return false;
+        }
+        if (empty(bQuantity)) {
+            showMessage('danger', 'Error: Booking quantity should be greater than 0.');
+            $('#edit-booking-modal #booking_qnt').focus();
             return false;
         }
         if (empty(bStart)) {
@@ -402,6 +413,7 @@ $(document).ready(function() {
             data:       {
                             _token: $('meta[name="csrf-token"]').attr('content'),
                             id: bId,
+                            booking_qnt: bQuantity,
                             booking_start: bStart,
                             booking_end: bEnd
                         },

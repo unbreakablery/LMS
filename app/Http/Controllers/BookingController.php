@@ -41,6 +41,7 @@ class BookingController extends Controller
     public function requestBooking(Request $request)
     {
         $id = $request->get('id');
+        $booking_qnt = $request->get('booking_qnt');
         $booking_start = $request->get('booking_start');
         $booking_end = $request->get('booking_end');
 
@@ -54,8 +55,17 @@ class BookingController extends Controller
             ]);
         }
 
-        // Set Equipment Status
-        $equipment->equ_status = '1'; //booking
+        // Check booking quantity
+        if ($booking_qnt > $equipment->equ_current_qnt) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Error: Booking quantity should be less than current quantity.'
+            ]);
+        }
+
+        // Set Equipment current quantity and status
+        $equipment->equ_current_qnt -= $booking_qnt;
+        $equipment->equ_status = ($equipment->equ_current_qnt == 0) ? '0' : '1'; //unbookable or bookable
         $equipment->save();
         $equipment->getStatusName();
         
@@ -65,6 +75,7 @@ class BookingController extends Controller
         $booking->booking_user = Auth::user()->id;
         $booking->booking_date = date('Y-m-d');
         $booking->status = '0'; //booking
+        $booking->booking_qnt = $booking_qnt;
         $booking->booking_start = $booking_start;
         $booking->booking_end = $booking_end;
         $booking->save();
@@ -134,8 +145,11 @@ class BookingController extends Controller
             ]);
         }
 
-        // Change Equipment Status
-        $equipment->equ_status = '0'; //available
+        // Change Equipment current quantity and status
+        if ($booking->status == '0') {
+            $equipment->equ_current_qnt += $booking->booking_qnt;
+            $equipment->equ_status = '1'; //bookable
+        }
         $equipment->save();
 
         // Delete Booking
@@ -168,11 +182,35 @@ class BookingController extends Controller
         $status = $request->get('status');
 
         $booking = Booking::find($id);
+        $equipment = Equipment::find($booking->equ_id);
 
         if (empty($booking)) {
             return response()->json([
                 'success' => false,
                 'message' => 'Error: Booking(ID: ' . $bId . ') not exists.'
+            ]);
+        }
+
+        if ($booking->status == $status) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Error: You didn\'t change the booking status.'
+            ]);
+        }
+
+        if ($status == '0' && $booking->booking_qnt > $equipment->equ_current_qnt) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Error: Can\'t change booking status because of booking and current quantity.'
+            ]);
+        }
+
+        if ($booking->status != '0' && $booking->status != '1' && 
+            ($status == '0' || $status == '1') && 
+            $booking->booking_qnt > $equipment->equ_current_qnt) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Error: Can\'t change booking status because of booking quantity is greater than current quantity in storage.'
             ]);
         }
 
@@ -192,22 +230,34 @@ class BookingController extends Controller
         }
 
         // Change Booking Status
+        $old_booking_status = $booking->status;
         $booking->status = $status;
         $booking->staff = Auth::user()->id;
         $booking->save();
 
         $booking = getBookingById($id);
 
-        // Change Equipment Status
-        $equipment = Equipment::find($booking->equ_id);
-
-        if ($booking->status == '0') {
-            $equipment->equ_status = '1'; //in booking
-        } else if ($booking->status == '1') {
-            $equipment->equ_status = '2'; //pickup(booked/approved)
-        } else if ($booking->status == '2') {
-            $equipment->equ_status = '0'; //available(rejected)
+        // Change Equipment current quantity and status
+        if ($old_booking_status == '0') {
+            if ($status != '1') { //from in booking to rejected, cancelled, and returned
+                $equipment->equ_current_qnt += $booking->booking_qnt;
+            }
+        } else if ($old_booking_status == '1') {
+            if ($status != '0') { //from approved to rejected, cancelled, and returned
+                $equipment->equ_current_qnt += $booking->booking_qnt;
+            }
+        } else {
+            if ($status == '0' || $status == '1') { //from rejected, cancelled, and returned to in booking or approved
+                $equipment->equ_current_qnt -= $booking->booking_qnt;
+            }
         }
+        
+        if ($equipment->equ_current_qnt == 0) {
+            $equipment->equ_status = '0'; //unbookable
+        } else {
+            $equipment->equ_status = '1'; //bookable
+        }
+        
         $equipment->save();        
 
         return response()->json([
@@ -250,9 +300,10 @@ class BookingController extends Controller
 
         $booking = getBookingById($id);
 
-        // Change Equipment Status
+        // Change Equipment current quantity and status
         $equipment = Equipment::find($booking->equ_id);
-        $equipment->equ_status = '0'; //available(cancelled)
+        $equipment->equ_current_qnt += $booking->booking_qnt;
+        $equipment->equ_status = '1'; //bookable
         $equipment->save();
 
         \Session::flash('success', 'Booking(ID: B-' . $booking->id . ') was cancelled successfully.');
@@ -296,9 +347,10 @@ class BookingController extends Controller
 
         $booking = getBookingById($id);
 
-        // Change Equipment Status
+        // Change Equipment current quantity and status
         $equipment = Equipment::find($booking->equ_id);
-        $equipment->equ_status = '0'; //available(returned)
+        $equipment->equ_current_qnt += $booking->booking_qnt;
+        $equipment->equ_status = '1'; //bookable
         $equipment->save();
 
         \Session::flash('success', 'Equipment(CODE: ' . $equipment->equ_code . 
@@ -312,10 +364,19 @@ class BookingController extends Controller
     public function updateBookingPeriod(Request $request)
     {
         $id = $request->get('id');
+        $booking_qnt = $request->get('booking_qnt');
         $booking_start = $request->get('booking_start');
         $booking_end = $request->get('booking_end');
 
         $booking = Booking::find($id);
+        $equipment = Equipment::find($booking->equ_id);
+
+        if ($booking_qnt > $equipment->equ_current_qnt) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Error: Can\'t update this booking because booking quantity is greater than current quantity in storage.'
+            ]);
+        }
 
         if (empty($booking)) {
             return response()->json([
@@ -339,10 +400,22 @@ class BookingController extends Controller
             ]);
         }
 
-        // Change Booking Period
+        // Change Booking quantity and period
+        $old_booking_qnt = $booking->booking_qnt;
+        $booking->booking_qnt = $booking_qnt;
         $booking->booking_start = $booking_start;
         $booking->booking_end = $booking_end;
         $booking->save();
+
+        // Change equipment current qnt and status
+        $equipment->equ_current_qnt += $old_booking_qnt;
+        $equipment->equ_current_qnt -= $booking_qnt;
+        if ($equipment->equ_current_qnt == 0) {
+            $equipment->equ_status = '0'; //unbookable
+        } else {
+            $equipment->equ_status = '1'; //bookable
+        }
+        $equipment->save();
 
         \Session::flash('success', 'Booking(ID: B-' . $booking->id . ') period was changed successfully.');
 

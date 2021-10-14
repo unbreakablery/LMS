@@ -13,6 +13,7 @@ class Booking extends Model
         'booking_user',
         'booking_date',
         'status',
+        'booking_qnt',
         'booking_start',
         'booking_end',
         'staff'
