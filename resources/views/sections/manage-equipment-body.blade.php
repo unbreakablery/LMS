@@ -27,6 +27,8 @@
                         <th scope="col" class="pl-2 pr-2"><div class="equipments-table-header">Name</div></th>
                         <th scope="col" class="pl-2 pr-2"><div class="equipments-table-header">Image</div></th>
                         <th scope="col" class="pl-2 pr-2"><div class="equipments-table-header">Status</div></th>
+                        <th scope="col" class="pl-2 pr-2"><div class="equipments-table-header">Total Quantity</div></th>
+                        <th scope="col" class="pl-2 pr-2"><div class="equipments-table-header">Quantity In Storage</div></th>
                         <th scope="col" class="pl-2 pr-2"><div class="equipments-table-header">Category</div></th>
                         <th scope="col" class="no-sort text-center" width="180">
                             <div class="equipments-table-header">Actions</div>
@@ -46,17 +48,18 @@
                             @endif
                         </td>
                         <td class="text-white pl-2 pr-2 {{ getStatusClassName('equipment', $equipment->equ_status) }}">{{ getStatusName('equipment', $equipment->equ_status) }}</td>
+                        <td class="text-white pl-2 pr-2 {{ getQntClassName($equipment->equ_total_qnt) }}">{{ $equipment->equ_total_qnt }}</td>
+                        <td class="text-white pl-2 pr-2 {{ getQntClassName($equipment->equ_current_qnt) }}">{{ $equipment->equ_current_qnt }}</td>
                         <td class="text-white pl-2 pr-2">{{ $equipment->category->cat_name }}</td>
                         <td class="text-center text-white">
                             <button type="button" class="btn btn-sm btn-dark btn-view-equipment" title="View Detail">
                                 <i class="bi bi-eye-fill align-middle"></i> View
                             </button>
-                            <button type="button" class="btn btn-sm btn-success btn-edit-equipment" title="Edit"
-                                    @if($equipment->equ_status) {{ 'disabled' }}@endif>
+                            <button type="button" class="btn btn-sm btn-primary btn-edit-equipment" title="Edit">
                                 <i class="bi bi-pencil-square align-middle"></i> Edit
                             </button>
                             <button type="button" class="btn btn-sm btn-danger btn-delete-equipment" title="Delete"
-                                    @if($equipment->equ_status) {{ 'disabled' }}@endif>
+                                    @if($equipment->equ_total_qnt != $equipment->equ_current_qnt) {{ 'disabled' }}@endif>
                                 <i class="bi bi-x-circle-fill align-middle"></i> Delete
                             </button>
                         </td>
@@ -144,6 +147,30 @@
                     <div class="col-lg-12 col-md-12 col-sm-12">
                         <div class="form-group text-center equ_image_wrapper">
                             <img src="" class="img-fluid" alt="Equipment Image" id="equ_image" />
+                        </div>
+                    </div>
+                    <div class="col-lg-6 col-md-6 col-sm-12">
+                        <div class="form-group">
+                            <label for="equ_total_qnt" class="font-weight-bolder">Total Quantity</label>
+                            <input class="form-control n-b-r"
+                                    type="text"
+                                    id="equ_total_qnt"
+                                    name="equ_total_qnt"
+                                    value=""
+                                    readonly
+                            />
+                        </div>
+                    </div>
+                    <div class="col-lg-6 col-md-6 col-sm-12">
+                        <div class="form-group">
+                            <label for="equ_current_qnt" class="font-weight-bolder">Quantity in Storage</label>
+                            <input class="form-control n-b-r"
+                                    type="text"
+                                    id="equ_current_qnt"
+                                    name="equ_current_qnt"
+                                    value=""
+                                    readonly
+                            />
                         </div>
                     </div>
                     <div class="col-lg-12 col-md-12 col-sm-12">
@@ -264,6 +291,18 @@
                         </div>
                         <div class="col-lg-12 col-md-12 col-sm-12">
                             <div class="form-group">
+                                <label for="equ_total_qnt" class="font-weight-bolder">Total Quantity</label>
+                                <input class="form-control n-b-r"
+                                        type="number"
+                                        id="equ_total_qnt"
+                                        name="equ_total_qnt"
+                                        value="100"
+                                        min="0"
+                                />
+                            </div>
+                        </div>
+                        <div class="col-lg-12 col-md-12 col-sm-12">
+                            <div class="form-group">
                                 <label for="cat_name" class="font-weight-bolder">Category</label>
                                 <select name="cat_id" id="cat_id" class="form-control n-b-r">
                                 </select>
@@ -339,6 +378,18 @@
                                 <div class="col-lg-12 col-md-12 col-sm-12 p-0 text-center">
                                     <img src="{{ asset('/images/equipments/empty-image.png') }}" id="edit_equ_image_preview" class="img-thumbnail">
                                 </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-12 col-md-12 col-sm-12">
+                            <div class="form-group">
+                                <label for="equ_total_qnt" class="font-weight-bolder">Total Quantity</label>
+                                <input class="form-control n-b-r"
+                                        type="number"
+                                        id="equ_total_qnt"
+                                        name="equ_total_qnt"
+                                        value="100"
+                                        min="0"
+                                />
                             </div>
                         </div>
                         <div class="col-lg-12 col-md-12 col-sm-12">

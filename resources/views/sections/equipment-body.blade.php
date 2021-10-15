@@ -22,6 +22,8 @@
                         <th scope="col" class="pl-2 pr-2"><div class="equipments-table-header">Name</div></th>
                         <th scope="col" class="pl-2 pr-2"><div class="equipments-table-header">Image</div></th>
                         <th scope="col" class="pl-2 pr-2"><div class="equipments-table-header">Status</div></th>
+                        <th scope="col" class="pl-2 pr-2"><div class="equipments-table-header">Total Quantity</div></th>
+                        <th scope="col" class="pl-2 pr-2"><div class="equipments-table-header">Quantity In Storage</div></th>
                         <th scope="col" class="pl-2 pr-2"><div class="equipments-table-header">Category</div></th>
                         <th scope="col" class="no-sort text-center" width="210">
                             <div class="equipments-table-header">Actions</div>
@@ -41,13 +43,15 @@
                             @endif
                         </td>
                         <td class="text-white pl-2 pr-2 {{ getStatusClassName('equipment', $equipment->equ_status) }}">{{ getStatusName('equipment', $equipment->equ_status) }}</td>
+                        <td class="text-white pl-2 pr-2 {{ getQntClassName($equipment->equ_total_qnt) }}">{{ $equipment->equ_total_qnt }}</td>
+                        <td class="text-white pl-2 pr-2 {{ getQntClassName($equipment->equ_current_qnt) }}">{{ $equipment->equ_current_qnt }}</td>
                         <td class="text-white pl-2 pr-2">{{ $equipment->category->cat_name }}</td>
                         <td class="text-left text-white">
                             <button type="button" class="btn btn-sm btn-dark btn-view-equipment" title="View Details">
                                 <i class="bi bi-eye-fill align-middle"></i> View Details
                             </button>
-                            @if(!$equipment->equ_status)
-                            <button type="button" class="btn btn-sm btn-success btn-request-booking" title="Request Booking">
+                            @if($equipment->equ_status)
+                            <button type="button" class="btn btn-sm btn-primary btn-request-booking" title="Request Booking">
                                 <i class="bi bi-basket2-fill align-middle"></i> Request Booking
                             </button>
                             @endif
@@ -76,7 +80,12 @@
                         <div class="form-group mb-0">
                             <input type="hidden" name="equ_id" id="equ_id" value="" />
                         </div>
-                        <div class="form-group mb-0">
+                        <div class="form-group mb-4">
+                            <label class="mb-0 equ-info" for="booking_qnt">Booking Quantity</label>
+                            <input type="number" class="form-control n-b-r" name="booking_qnt" id="booking_qnt" value="1" min="1"/>
+                            <span class="text-success font-weight-bold" id="equ_current_qnt"></span>
+                        </div>
+                        <div class="form-group mb-4">
                             <label class="mb-0 equ-info" for="booking_start">Booking Start</label>
                             <input type="text" class="form-control n-b-r date" name="booking_start" id="booking_start" />
                         </div>
@@ -140,6 +149,30 @@
                     <div class="col-lg-12 col-md-12 col-sm-12">
                         <div class="form-group text-center equ_image_wrapper">
                             <img src="" class="img-fluid" alt="Equipment Image" id="equ_image" />
+                        </div>
+                    </div>
+                    <div class="col-lg-6 col-md-6 col-sm-12">
+                        <div class="form-group">
+                            <label for="equ_total_qnt" class="font-weight-bolder">Total Quantity</label>
+                            <input class="form-control n-b-r"
+                                    type="text"
+                                    id="equ_total_qnt"
+                                    name="equ_total_qnt"
+                                    value=""
+                                    readonly
+                            />
+                        </div>
+                    </div>
+                    <div class="col-lg-6 col-md-6 col-sm-12">
+                        <div class="form-group">
+                            <label for="equ_current_qnt" class="font-weight-bolder">Quantity in Storage</label>
+                            <input class="form-control n-b-r"
+                                    type="text"
+                                    id="equ_current_qnt"
+                                    name="equ_current_qnt"
+                                    value=""
+                                    readonly
+                            />
                         </div>
                     </div>
                     <div class="col-lg-12 col-md-12 col-sm-12">
