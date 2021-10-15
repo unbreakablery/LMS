@@ -14,6 +14,8 @@ class Equipment extends Model
         'equ_name',
         'equ_desc',
         'equ_image',
+        'equ_total_qnt',
+        'equ_current_qnt',
         'equ_status',
         'cat_id'
     ];
