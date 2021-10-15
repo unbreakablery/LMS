@@ -73,6 +73,7 @@ $(document).ready(function () {
     $('#new-equipment-modal #equ_name').val('');
     $('#new-equipment-modal #equ_desc').val('');
     $('#new-equipment-modal #equ_image').val('');
+    $('#new-equipment-modal #equ_total_qnt').val(100);
     $('#new-equipment-modal #file').val('');
     $('#new-equipment-modal #preview').attr('src', host + '/images/equipments/empty-image.png');
     $('#new-equipment-modal #cat_id').html('');
@@ -107,11 +108,19 @@ $(document).ready(function () {
   $('button#btn-save-new-equipment').click(function () {
     if (empty($('#new-equipment-modal #equ_code').val())) {
       showMessage('danger', 'Error: please enter equipment code.');
+      $('#new-equipment-modal #equ_code').focus();
       return false;
     }
 
     if (empty($('#new-equipment-modal #equ_name').val())) {
       showMessage('danger', 'Error: please enter equipment name.');
+      $('#new-equipment-modal #equ_name').focus();
+      return false;
+    }
+
+    if (empty($('#new-equipment-modal #equ_total_qnt').val()) || $('#new-equipment-modal #equ_total_qnt').val() < 0) {
+      showMessage('danger', 'Error: please enter equipment quantity.');
+      $('#new-equipment-modal #equ_total_qnt').focus();
       return false;
     }
 
@@ -171,6 +180,8 @@ $(document).ready(function () {
             $('#view-equipment-modal #equ_image').attr('src', host + '/images/equipments/' + data.equipment.equ_image);
           }
 
+          $('#view-equipment-modal #equ_total_qnt').val(data.equipment.equ_total_qnt);
+          $('#view-equipment-modal #equ_current_qnt').val(data.equipment.equ_current_qnt);
           $('#view-equipment-modal #equ_status').val(data.equipment.status_name);
           $('#view-equipment-modal #cat_name').val(data.equipment.category.cat_name);
           $('#view-equipment-modal #created_at').val(data.equipment.created_at);
@@ -232,6 +243,7 @@ $(document).ready(function () {
     $('#edit-equipment-modal #equ_image').val('');
     $('#edit-equipment-modal #edit_equ_image_file').val('');
     $('#edit-equipment-modal #edit_equ_image_preview').attr('src', host + '/images/equipments/empty-image.png');
+    $('#edit-equipment-modal #equ_total_qnt').val(100);
     $('#edit-equipment-modal #equ_status').val('');
     $('#edit-equipment-modal #cat_id').html('');
   }
@@ -269,6 +281,7 @@ $(document).ready(function () {
             $('#edit-equipment-modal #edit_equ_image_preview').attr('src', host + '/images/equipments/' + data.equipment.equ_image);
           }
 
+          $('#edit-equipment-modal #equ_total_qnt').val(data.equipment.equ_total_qnt);
           $('#edit-equipment-modal #equ_status').val(data.equipment.status_name); // $('#edit-equipment-modal #cat_name').val(data.equipment.category.cat_name);
 
           var cat_id = data.equipment.cat_id;
@@ -302,11 +315,19 @@ $(document).ready(function () {
   $('button#btn-update-equipment').click(function () {
     if (empty($('#edit-equipment-modal #equ_code').val())) {
       showMessage('danger', 'Error: please enter equipment code.');
+      $('#edit-equipment-modal #equ_code').focus();
       return false;
     }
 
     if (empty($('#edit-equipment-modal #equ_name').val())) {
       showMessage('danger', 'Error: please enter equipment name.');
+      $('#edit-equipment-modal #equ_name').focus();
+      return false;
+    }
+
+    if (empty($('#new-equipment-modal #equ_total_qnt').val()) || $('#new-equipment-modal #equ_total_qnt').val() < 0) {
+      showMessage('danger', 'Error: please enter equipment quantity.');
+      $('#new-equipment-modal #equ_total_qnt').focus();
       return false;
     }
 
@@ -339,6 +360,8 @@ $(document).ready(function () {
     var eId = $(this).closest('tr').attr('data-id');
     $('#request-booking-modal #equ_id').val(eId);
     selectedEquipment = $(this).closest('tr');
+    $('#request-booking-modal #booking_qnt').val(1);
+    $('#request-booking-modal #equ_current_qnt').text('(Quantity in Storage: ' + $(selectedEquipment).find('td:nth-child(6)').text() + ')');
     $('#request-booking-modal #booking_start').datepicker("setDate", new Date());
     $('#request-booking-modal #booking_end').datepicker("setDate", new Date());
     $('#request-booking-modal').modal({
@@ -347,8 +370,22 @@ $(document).ready(function () {
   });
   $('button#btn-request-booking-confirm').click(function () {
     var eId = $('#request-booking-modal #equ_id').val();
+    var bookingQnt = $('#request-booking-modal #booking_qnt').val();
     var bookingStart = $('#request-booking-modal #booking_start').val();
     var bookingEnd = $('#request-booking-modal #booking_end').val();
+
+    if (empty(bookingQnt)) {
+      showMessage('danger', 'Error: Booking quantity should be greater than 0.');
+      $('#request-booking-modal #booking_qnt').focus();
+      return false;
+    }
+
+    if (bookingEnd < bookingStart) {
+      showMessage('danger', 'Error: Start date should be less than end date.');
+      $('#request-booking-modal #booking_start').focus();
+      return false;
+    }
+
     loader('show');
     $.ajax({
       url: host + "/booking/request",
@@ -357,6 +394,7 @@ $(document).ready(function () {
       data: {
         _token: $('meta[name="csrf-token"]').attr('content'),
         id: eId,
+        booking_qnt: bookingQnt,
         booking_start: bookingStart,
         booking_end: bookingEnd
       },
@@ -365,21 +403,33 @@ $(document).ready(function () {
 
         if (data.success == true) {
           $(selectedEquipment).find('td:nth-child(4)').text(data.equipment.status_name);
+          $(selectedEquipment).find('td:nth-child(6)').text(data.equipment.equ_current_qnt);
 
           if (data.equipment.equ_status == '0') {
-            $(selectedEquipment).find('td:nth-child(4)').removeClass('text-danger');
-            $(selectedEquipment).find('td:nth-child(4)').addClass('text-success');
-          } else if (data.equipment.equ_status == '1') {
-            $(selectedEquipment).find('td:nth-child(4)').removeClass('text-success');
-            $(selectedEquipment).find('td:nth-child(4)').addClass('text-danger');
+            $(selectedEquipment).find('td:nth-child(4)').removeClass('bg-transparent');
+            $(selectedEquipment).find('td:nth-child(4)').addClass('bg-danger');
             $(selectedEquipment).find('button.btn-request-booking').remove();
           } else {
-            $(selectedEquipment).find('td:nth-child(4)').removeClass('text-success');
-            $(selectedEquipment).find('td:nth-child(4)').removeClass('text-danger');
-            $(selectedEquipment).find('button.btn-request-booking').remove();
+            $(selectedEquipment).find('td:nth-child(4)').removeClass('bg-danger');
+            $(selectedEquipment).find('td:nth-child(4)').addClass('bg-transparent');
+          }
+
+          if (data.equipment.equ_current_qnt == 0) {
+            $(selectedEquipment).find('td:nth-child(6)').removeClass('bg-transparent');
+            $(selectedEquipment).find('td:nth-child(6)').removeClass('bg-warning');
+            $(selectedEquipment).find('td:nth-child(6)').addClass('bg-danger');
+          } else if (data.equipment.equ_current_qnt == 1) {
+            $(selectedEquipment).find('td:nth-child(6)').removeClass('bg-transparent');
+            $(selectedEquipment).find('td:nth-child(6)').removeClass('bg-danger');
+            $(selectedEquipment).find('td:nth-child(6)').addClass('bg-warning');
+          } else {
+            $(selectedEquipment).find('td:nth-child(6)').removeClass('bg-danger');
+            $(selectedEquipment).find('td:nth-child(6)').removeClass('bg-warning');
+            $(selectedEquipment).find('td:nth-child(6)').addClass('bg-transparent');
           }
 
           $('#request-booking-modal').modal('hide');
+          showMessage('success', 'Your booking was reserved successfully.');
         } else {
           showMessage('danger', data.message);
         }
