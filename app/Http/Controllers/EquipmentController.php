@@ -69,7 +69,15 @@ class EquipmentController extends Controller
             $input['equ_image'] = "$equImage";
         }
 
-        $input['equ_status'] = '0';
+
+        $input['equ_current_qnt'] = $input['equ_total_qnt'];
+
+        if ($input['equ_total_qnt'] == 0) {
+            $input['equ_status'] = '0';
+        } else {
+            $input['equ_status'] = '1';
+        }
+        
 
         Equipment::create($input);
 
@@ -123,6 +131,24 @@ class EquipmentController extends Controller
         $equipment->equ_name = $input['equ_name'];
         $equipment->equ_desc = $input['equ_desc'];
         $equipment->cat_id = $input['cat_id'];
+
+        //updates total and current quantity
+        $diff = $equipment->equ_total_qnt - $input['equ_total_qnt'];
+        if ($diff > 0 && $diff > $equipment->equ_current_qnt) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Error: Can\'t update because the reduced quantity is greater than current quantity in storage.'
+            ]);
+        }
+        $equipment->equ_total_qnt -= $diff;
+        $equipment->equ_current_qnt -= $diff;
+
+        //updates status
+        if ($equipment->equ_current_qnt > 0) {
+            $equipment->equ_status = '1';
+        } else {
+            $equipment->equ_status = '0';
+        }
         
         $equipment->save();
 
@@ -143,6 +169,14 @@ class EquipmentController extends Controller
             return response()->json([
                 'success' => false,
                 'message' => 'Error: Equipment(ID: ' . $eId . ') not exists.'
+            ]);
+        }
+
+        //check if equipment is removable
+        if ($equipment->equ_total_qnt != $equipment->equ_current_qnt) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Error: Can\'t remove this equipment because these equipments are in booking.'
             ]);
         }
 
