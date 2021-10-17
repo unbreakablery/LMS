@@ -24,6 +24,7 @@
                         <th scope="col" class="pl-2 pr-2"><div class="bookings-table-header">Booking User</div></th>
                         <th scope="col" class="pl-2 pr-2 text-center" width="120"><div class="bookings-table-header">Booking Date</div></th>
                         <th scope="col" class="pl-2 pr-2"><div class="bookings-table-header">Status</div></th>
+                        <th scope="col" class="pl-2 pr-2 text-center" width="150"><div class="bookings-table-header">Booking Quantity</div></th>
                         <th scope="col" class="pl-2 pr-2 text-center" width="120"><div class="bookings-table-header">Booking Start</div></th>
                         <th scope="col" class="pl-2 pr-2 text-center" width="120"><div class="bookings-table-header">Booking End</div></th>
                         <th scope="col" class="pl-2 pr-2 text-center" width="150"><div class="bookings-table-header">Updated At</div></th>
@@ -51,11 +52,12 @@
                         <td class="text-white pl-2 pr-2 {{ getStatusClassName('booking', $booking->status) }}">
                             {{ getStatusName('booking', $booking->status) }}
                         </td>
+                        <td class="text-white pl-2 pr-2 text-right">{{ $booking->booking_qnt }}</td>
                         <td class="text-white pl-2 pr-2 text-center">{{ $booking->booking_start }}</td>
                         <td class="text-white pl-2 pr-2 text-center">{{ $booking->booking_end }}</td>
                         <td class="text-white pl-2 pr-2 text-center">{{ $booking->updated_at }}</td>
                         <td class="text-center text-white">
-                            <button type="button" class="btn btn-sm btn-success btn-change-booking-status" title="Change Status">
+                            <button type="button" class="btn btn-sm btn-primary btn-change-booking-status" title="Change Status">
                                 <i class="bi bi-pencil-square align-middle"></i> Change Status
                             </button>
                             <button type="button" class="btn btn-sm btn-danger btn-delete-booking" title="Delete">
@@ -147,6 +149,30 @@
                     <div class="col-lg-12 col-md-12 col-sm-12">
                         <div class="form-group text-center equ_image_wrapper">
                             <img src="" class="img-fluid" alt="Equipment Image" id="equ_image" />
+                        </div>
+                    </div>
+                    <div class="col-lg-6 col-md-6 col-sm-12">
+                        <div class="form-group">
+                            <label for="equ_total_qnt" class="font-weight-bolder">Total Quantity</label>
+                            <input class="form-control n-b-r"
+                                    type="text"
+                                    id="equ_total_qnt"
+                                    name="equ_total_qnt"
+                                    value=""
+                                    readonly
+                            />
+                        </div>
+                    </div>
+                    <div class="col-lg-6 col-md-6 col-sm-12">
+                        <div class="form-group">
+                            <label for="equ_current_qnt" class="font-weight-bolder">Quantity in Storage</label>
+                            <input class="form-control n-b-r"
+                                    type="text"
+                                    id="equ_current_qnt"
+                                    name="equ_current_qnt"
+                                    value=""
+                                    readonly
+                            />
                         </div>
                     </div>
                     <div class="col-lg-12 col-md-12 col-sm-12">
@@ -251,6 +277,18 @@
                                         type="text"
                                         id="user_name"
                                         name="user_name"
+                                        value=""
+                                        readonly
+                                />
+                            </div>
+                        </div>
+                        <div class="col-lg-12 col-md-12 col-sm-12">
+                            <div class="form-group">
+                                <label for="booking_qnt" class="font-weight-bolder">Booking Quantity</label>
+                                <input class="form-control n-b-r"
+                                        type="text"
+                                        id="booking_qnt"
+                                        name="booking_qnt"
                                         value=""
                                         readonly
                                 />
