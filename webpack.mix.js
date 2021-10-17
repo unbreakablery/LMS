@@ -17,6 +17,7 @@ mix.js('resources/js/app.js', 'public/js')
     .js('resources/js/category.js', 'public/js')
     .js('resources/js/equipment.js', 'public/js')
     .js('resources/js/booking.js', 'public/js')
+    .js('resources/js/tracking.js', 'public/js')
     .sass('resources/sass/app.scss', 'public/css')
     .sass('resources/sass/sidebar.scss', 'public/css')
     .sass('resources/sass/setting.scss', 'public/css');
