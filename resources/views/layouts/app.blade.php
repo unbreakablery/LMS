@@ -72,7 +72,7 @@
                                     {{ Auth::user()->first_name }} {{ Auth::user()->last_name }} ({{ getUserRoleName(Auth::user()->role) }})
                                 </a>
 
-                                <div class="dropdown-menu dropdown-menu-right bg-black border-white n-b-r" aria-labelledby="navbarDropdown">
+                                <div class="dropdown-menu dropdown-menu-right bg-dropdown-menu border-white n-b-r" aria-labelledby="navbarDropdown">
                                     <a class="dropdown-item text-white" href="{{ route('settings') }}">
                                         {{ __('Settings') }}
                                     </a>
@@ -212,6 +212,10 @@
 
     @if (Route::currentRouteName() == 'booking.manage.list' || Route::currentRouteName() == 'booking.list')
         <script src="{{ asset('js/booking.js') }}"></script>
+    @endif
+
+    @if (Route::currentRouteName() == 'tracking.list')
+        <script src="{{ asset('js/tracking.js') }}"></script>
     @endif
 </body>
 </html>

@@ -92,7 +92,7 @@
                 </div>
             </div>
         </div>
-        <!-- <div class="col-md-7" style="background-image: url(images/login-image.jpg); background-size: cover;background-position: center center"></div> -->
+        <div class="col-md-7" style="background-image: url(images/login-image.jpg); background-size: cover;background-position: center center"></div>
     </div>
 </div>
 @endsection
