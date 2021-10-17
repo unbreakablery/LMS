@@ -31,7 +31,7 @@
                         <td class="text-white pl-2 pr-2">{{ $user->created_at }}</td>
                         <td class="text-white pl-2 pr-2">{{ $user->updated_at }}</td>
                         <td class="text-center text-white">
-                            <button type="button" class="btn btn-sm btn-success btn-edit-user" title="Edit User">
+                            <button type="button" class="btn btn-sm btn-primary btn-edit-user" title="Edit User">
                                 <i class="bi bi-person-fill"></i> Edit
                             </button><button type="button" class="btn btn-sm btn-danger btn-remove-user" title="Delete User" @if($user->role == 0){{'disabled'}}@endif>
                                 <i class="bi bi-person-x"></i> Delete
