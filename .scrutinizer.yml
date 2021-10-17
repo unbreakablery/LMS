@@ -18,7 +18,7 @@ build:
         my-tests:
             environment:
                 php:
-                    version: 8
+                    version: 7.4
         coverage:
             tests:
                 override:
