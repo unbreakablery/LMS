@@ -29,7 +29,21 @@ footer.footer {
 
 .bg-ec {
     // background-image: radial-gradient(farthest-corner at 90% 10%, #0000ee 0%, #000 65%) !important;
-    background-color: #000000;
+    background-image: radial-gradient(farthest-corner at 90% 10%, #5ec21b 0%, #1ab682 65%) !important;
+    // background-color: #000000;
+}
+
+body.bg-ec {
+    a {
+        color: #004040;
+    }
+    .container-login {
+        .card {
+            .card-header {
+                background-color: transparent;
+            }
+        }
+    }
 }
 
 .bg-dark {
@@ -47,6 +61,10 @@ footer.footer {
 
 .bg-yellow {
     background-color: #ffff00 !important;
+}
+
+.bg-dropdown-menu {
+    background-color: #1ab682 !important;
 }
 
 .text-black {
@@ -160,7 +178,8 @@ ul.category li.sub-category.active {
 }
 ul.category li.sub-category:hover {
     cursor: pointer;
-    background-color: #495057;
+    // background-color: #495057;
+    background-color: #5ec21b;
 }
 
 /*
@@ -296,8 +315,8 @@ color: #007bff;
     padding-top: 0px;
     padding-bottom: 0px;
     font-size: 1rem;
-    background-color: rgba(0, 0, 0, .25);
-    box-shadow: inset -1px 0 0 rgba(0, 0, 0, .25);
+    // background-color: rgba(0, 0, 0, .25);
+    // box-shadow: inset -1px 0 0 rgba(0, 0, 0, .25);
 }
 
 .navbar .navbar-toggler {
@@ -323,7 +342,7 @@ color: #007bff;
 }
 
 .dropdown-item:hover, .dropdown-item:focus {
-    background-color: #6c757d;
+    background-color: #5ec21b;
 }
 
 table.dataTable tbody tr {
@@ -940,8 +959,8 @@ input[type='checkbox'] {
 // table#equipments-table,
 table#users-table {
     tr th {
-        padding-top: 0;
-        padding-bottom: 0;
+        // padding-top: 0;
+        // padding-bottom: 0;
         border-bottom: 0 !important;
         border-top: 0 !important;
         box-shadow: inset 0 1px 0 #fff, inset 0 -1px 0 #fff;
@@ -993,11 +1012,11 @@ table#users-table {
     tr th {
         position: sticky;
         top: 0px;
-        padding: 0.25rem 5px;
+        // padding: 0.25rem 5px;
         border-color: #fff;
     }
     tbody tr td {
-        padding: 0;
+        padding: 0.25rem 0;
     }
     .btn-remove-row {
         height: 1.5rem;
