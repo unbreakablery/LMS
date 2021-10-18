@@ -278,60 +278,43 @@ if (!function_exists('getStatusName')) {
             case 'equipment':
                 switch ($status) {
                     case '0':
-                        return 'Unbookable';
-                        break;
+                        return 'Not available';
                     case '1':
-                        return 'Bookable';
-                        break;
+                        return 'Available';
                 }
                 return 'Unknown';
-                break;
             case 'booking':
                 switch ($status) {
                     case '0':
                         return 'In Booking';
-                        break;
                     case '1':
                         return 'Booked/Approved';
-                        break;
                     case '2':
                         return 'Rejected';
-                        break;
                     case '3':
                         return 'Cancelled';
-                        break;
                     case '4':
                         return 'Returned';
-                        break;
                 }
                 return 'Unknown';
-                break;
             case 'tracking':
                     switch ($status) {
                         case '0':
                             return 'In Booking';
-                            break;
                         case '1':
                             return 'Booked/Approved';
-                            break;
                         case '2':
                             return 'Rejected';
-                            break;
                         case '3':
                             return 'Cancelled';
-                            break;
                         case '4':
                             return 'Deleted Booking';
-                            break;
                         case '5':
                             return 'Returned';
-                            break;
                         case '6':
                             return 'changed booking info';
-                            break;
                     }
                     return 'Unknown';
-                    break;
             case 'notification':
                 break;
         }
@@ -348,59 +331,42 @@ if (!function_exists('getStatusClassName')) {
                 switch ($status) {
                     case '0':
                         return 'bg-danger';
-                        break;
                     case '1':
                         return 'bg-transparent';
-                        break;
                 }
                 return 'bg-warning';
-                break;
             case 'booking':
                 switch ($status) {
                     case '0':
                         return 'bg-primary';
-                        break;
                     case '1':
                         return 'bg-transparent';
-                        break;
                     case '2':
                         return 'bg-danger';
-                        break;
                     case '3':
                         return 'bg-secondary';
-                        break;
                     case '4':
                         return 'bg-dark';
-                        break;
                 }
                 return 'bg-warning';
-                break;
             case 'tracking':
                     switch ($status) {
                         case '0':
                             return 'bg-primary';
-                            break;
                         case '1':
                             return 'bg-transparent';
-                            break;
                         case '2':
                             return 'bg-danger';
-                            break;
                         case '3':
                             return 'bg-secondary';
-                            break;
                         case '4':
                             return 'bg-warning';
-                            break;
                         case '5':
                             return 'bg-dark';
-                            break;
                         case '6':
                             return 'bg-info';
-                            break;
                     }
                     return 'bg-white';
-                    break;
             case 'notification':
                 break;
         }

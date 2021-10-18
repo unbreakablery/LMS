@@ -28,7 +28,7 @@
                         <th scope="col" class="pl-2 pr-2 text-center" width="120"><div class="bookings-table-header">Booking Start</div></th>
                         <th scope="col" class="pl-2 pr-2 text-center" width="120"><div class="bookings-table-header">Booking End</div></th>
                         <th scope="col" class="pl-2 pr-2 text-center" width="150"><div class="bookings-table-header">Updated At</div></th>
-                        <th scope="col" class="no-sort text-center" width="175">
+                        <th scope="col" class="no-sort text-center" width="185">
                             <div class="bookings-table-header">Actions</div>
                         </th>
                     </tr>

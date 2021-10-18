@@ -21,7 +21,7 @@
                         <th scope="col" class="pl-2 pr-2"><div class="equipments-table-header">Code</div></th>
                         <th scope="col" class="pl-2 pr-2"><div class="equipments-table-header">Name</div></th>
                         <th scope="col" class="pl-2 pr-2"><div class="equipments-table-header">Image</div></th>
-                        <th scope="col" class="pl-2 pr-2"><div class="equipments-table-header">Status</div></th>
+                        <th scope="col" class="pl-2 pr-2" width="100"><div class="equipments-table-header">Status</div></th>
                         <th scope="col" class="pl-2 pr-2"><div class="equipments-table-header">Total Quantity</div></th>
                         <th scope="col" class="pl-2 pr-2"><div class="equipments-table-header">Quantity In Storage</div></th>
                         <th scope="col" class="pl-2 pr-2"><div class="equipments-table-header">Category</div></th>
@@ -43,10 +43,10 @@
                             @endif
                         </td>
                         <td class="text-white pl-2 pr-2 {{ getStatusClassName('equipment', $equipment->equ_status) }}">{{ getStatusName('equipment', $equipment->equ_status) }}</td>
-                        <td class="text-white pl-2 pr-2 {{ getQntClassName($equipment->equ_total_qnt) }}">{{ $equipment->equ_total_qnt }}</td>
-                        <td class="text-white pl-2 pr-2 {{ getQntClassName($equipment->equ_current_qnt) }}">{{ $equipment->equ_current_qnt }}</td>
+                        <td class="text-white pl-2 pr-2 text-right {{ getQntClassName($equipment->equ_total_qnt) }}">{{ $equipment->equ_total_qnt }}</td>
+                        <td class="text-white pl-2 pr-2 text-right {{ getQntClassName($equipment->equ_current_qnt) }}">{{ $equipment->equ_current_qnt }}</td>
                         <td class="text-white pl-2 pr-2">{{ $equipment->category->cat_name }}</td>
-                        <td class="text-left text-white">
+                        <td class="text-white text-left">
                             <button type="button" class="btn btn-sm btn-dark btn-view-equipment" title="View Details">
                                 <i class="bi bi-eye-fill align-middle"></i> View Details
                             </button>

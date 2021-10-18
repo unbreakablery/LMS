@@ -65,7 +65,7 @@
                             </button>
                             @endif
                             @if($booking->status == '1')
-                            <button type="button" class="btn btn-sm btn-primary btn-return-equipment" title="Return Equipment">
+                            <button type="button" class="btn btn-sm btn-dark btn-return-equipment" title="Return Equipment">
                                 <i class="bi bi-arrow-left-circle-fill align-middle"></i> Return Equipment
                             </button>
                             @endif

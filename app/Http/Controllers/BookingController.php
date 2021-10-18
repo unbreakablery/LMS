@@ -187,7 +187,7 @@ class BookingController extends Controller
         if (empty($booking)) {
             return response()->json([
                 'success' => false,
-                'message' => 'Error: Booking(ID: ' . $bId . ') not exists.'
+                'message' => 'Error: Booking(ID: ' . $id . ') not exists.'
             ]);
         }
 
